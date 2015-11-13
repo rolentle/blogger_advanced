@@ -6,6 +6,8 @@ JsbloggerCodemash::Application.routes.draw do
     get :work
   end
 
+  resources :typeahead, :only => [:index]
+
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'

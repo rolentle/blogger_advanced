@@ -6,8 +6,15 @@ class Article < ActiveRecord::Base
   has_many :comments
   has_many :taggings
   has_many :tags, :through => :taggings
+  after_create do |article|
+    es_client.index index: 'blog_search', type: 'article', body: article.to_json
+  end
 
   #default_scope :include => [:comments, :tags]
+
+  def es_client
+    Elasticsearch::Client.new host: 'localhost:9200'
+  end
 
   def to_s
     return title
